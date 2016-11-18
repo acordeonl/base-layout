@@ -1,0 +1,299 @@
+<imports >
+    <link rel="import" href="../polymer/polymer.html">
+    <link rel="import" href="../app-layout/app-header-layout/app-header-layout.html">
+    <link rel="import" href="../paper-icon-button/paper-icon-button.html">
+    <link rel="import" href="../iron-scroll-threshold/iron-scroll-threshold.html">
+    <link rel="import" href="../local-dom/local-dom.html">
+    <link rel="import" href="../drop-menu/drop-menu.html">
+    <link rel="import" href="./page-css.html">
+</imports>
+<!--
+
+Shows drop down menu (works on chrome)
+
+### Usage
+The list displayed in the drop down menu can be set as an attribute.
+
+    <drop-menu list-items='["first" ,"second"]'></drop-menu>
+
+For an overlayed drop menu:
+
+    <drop-menu overlay-menu list-items='["first" ,"second"]'></drop-menu>
+
+### Styling
+ Custom property | Description | Default
+----------------|-------------|----------
+`--item-background-color` | List item backround color | `#f1ecef`
+`--item-color` | List item color used for fonts | `#302f31`
+`--close-color` | Icon button hover color | `4775D1`
+`--content-background` | Drop menu's background color | `white`
+`--close-color` | Icon button hover color | `4775D1`
+`--icon-button` | Mixin applied the icon button | `{}`
+
+@demo demo/drop-menu-demo.html
+-->
+<dom-module id="base-layout">
+    <template>
+        <styles >
+            <style include='page-css'></style>
+            <style main>
+            app-header-layout {
+                width: 100%;
+                height: 100%;
+            }
+            [container] {
+                width: 100%;
+                height: 100%;
+            }
+            [blank] {
+                height: 25px;
+                width: 100%;
+            }
+            [componentHeader] {
+                @apply(--layout-vertical);
+                @apply(--layout-center);
+                width: 100% ;
+            }
+            [header] {
+                width: 100%;
+                color: var(--title-color);
+                opacity: 0.65;
+                height: 50px;
+                @apply(--layout-horizontal);
+                @apply(--layout-center-justified);
+            }
+            [description] {
+                width: 66%;
+                font-size: 23px;
+                @apply(--layout-center);
+                @apply(--layout-horizontal);
+            }
+            [content] {
+                width: 100%;
+                @apply(--layout-vertical);
+                @apply(--layout-center);
+            }
+            [card] {
+                min-height: 30%;
+                @apply(--layout-horizontal);
+                @apply(--layout-justified);
+                width: 100%;
+                margin-bottom: 40px;
+                background-color: var(--content-background);
+            }
+            [laptop] [card]{
+                border-radius: 4px ;
+            }
+            [list] {
+                height: 50%;
+                overflow: hidden;
+                @apply(--layout-horizontal);
+                @apply(--layout-center-justified);
+                width: 96%;
+                margin-top: 30px;
+                margin-bottom: 25px;
+            }
+            [listContent] {
+                width: 90%;
+            }
+            [color] {
+                border-top-right-radius:4px;
+                border-bottom-right-radius:4px;
+                border-top-left-radius: 0px;
+                border-bottom-left-radius: 0px;
+                width: 8px;
+                background-color: var(--layout-color);
+            }
+            </style>
+            <style toolbar>
+                paper-item:hover {
+                    cursor: pointer;
+                }
+                paper-item {
+                    --paper-item: {
+                        white-space: nowrap;
+                    };
+                }
+                paper-icon-button:hover {
+                    color: var(--close-color);
+                }
+                [toolbar] {
+                    top: -70px;
+                    left: 0;
+                    width: 100%;
+                    height: 70px;
+                    color: var(--icon-primary-color);
+                    position: absolute;
+                    @apply(--layout-horizontal);
+                    @apply(--layout-justified);
+                }
+                [exit-icon] {
+                    height: 100%;
+                    margin-left: 10px;
+                    width: 12%;
+                    margin-top: 68px;
+                    @apply(--layout-center);
+                    @apply(--layout-horizontal);
+                }
+                [right-icons] paper-icon-button {
+                    margin-left: 20px;
+                }
+                [right-icons] drop-menu {
+                    margin-left: 15px;
+                }
+                [right-icons] {
+                    margin-top: 68px;
+                    height: 100%;
+                    margin-right: 15px;
+                    @apply(--layout-horizontal);
+                    @apply(--layout-center);
+                }
+                paper-item:hover {
+                    cursor: pointer;
+                }
+            </style>
+            <style mobile>
+                [mobile] [right-icons] {
+                    margin-right: 5px;
+                }
+                [mobile] [right-icons] drop-menu {
+                    margin-left: 10px;
+                }
+                [mobile] [blank] {
+                    height: 25px;
+                }
+                [mobile] [description] {
+                    width: 60%;
+                    font-size: 22px;
+                }
+            </style>
+            <style tablet>
+                [tablet] [right-icons] paper-icon-button{
+                    margin-left: 17px;
+                }
+                [tablet] [blank]{
+                    height: 40px;
+                }
+                [tablet] [description]{
+                    width: 75% ;
+                }
+                [tablet] [right-icons]{
+                    margin-right: 15px;
+                }
+                [tablet][page] [card]{
+                    width:100% ;
+                }
+            </style>
+            <style>
+                :host {
+                    --layout-color: var(--close-color);
+                }
+                iron-scroll-threshold {
+                    width: 100%;
+                    height: 100%;
+                }
+            </style>
+        </styles>
+        <local-dom mobile="{{mobile}}" tablet="{{tablet}}" laptop="{{laptop}}" page$=[[page]]>
+            <div container>
+                <app-header-layout has-scrolling-region id="scroll-region">
+                    <iron-scroll-threshold id="scroll" lower-threshold="300">
+                        <div blank></div>
+                        <template is="dom-if" if="[[!withHeader]]">
+                            <div header>
+                                <div description>
+                                    <p>[[header]]</p>
+                                </div>
+                            </div>
+                        </template>
+                        <template is="dom-if" if="[[withHeader]]">
+                            <template is="dom-if" if="[[withHeaderTitle]]">
+                                <div header>
+                                    <div description>
+                                        <p>[[header]]</p>
+                                    </div>
+                                </div>
+                            </template>
+                            <div componentHeader>
+                                <content select='[header]'></content>
+                            </div>
+                        </template>
+                        <div content>
+                            <div card>
+                                <div color></div>
+                                <div list>
+                                    <div listContent>
+                                        <content select='[content]'></content>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </iron-scroll-threshold>
+                    <div toolbar>
+                        <template is="dom-if" if="[[exitIcon]]">
+                            <div exit-icon>
+                                <paper-icon-button id="exitIcon" on-click="_iconClick" icon="[[exitIcon]]"></paper-icon-button>
+                            </div>
+                        </template>
+                        <div right-icons>
+                            <template is="dom-if" if="[[rightIcon]]">
+                                <paper-icon-button id="rightIcon" on-click="_iconClick" icon="[[rightIcon]]"></paper-icon-button>
+                            </template>
+                            <template is="dom-if" if="[[rightIcon2]]">
+                                <paper-icon-button id="rightIcon2" on-click="_iconClick" icon="[[rightIcon2]]"></paper-icon-button>
+                            </template>
+                            <template is="dom-if" if="[[menu]]">
+                                <drop-menu list-items='{{menu}}'></drop-menu>
+                            </template>
+                        </div>
+                    </div>
+                </app-header-layout>
+            </div>
+        </local-dom>
+    </template>
+    <script>
+        Polymer({
+            is: "base-layout",
+            observers: [],
+            behaviors: [],
+            listeners: {
+                'lower-threshold': '_clearTriggers'
+            },
+            properties: {
+                withHeader: {
+                    type: Boolean,
+                    value: false
+                },
+                withHeaderTitle: {
+                    type: Boolean,
+                    value: false
+                },
+                menu: {
+                    type: Array
+                },
+                color: {
+                    type: String
+                }
+            },
+            scrollTop: function(){
+                this.$.scroll.scroll(0,0) ;
+            },
+            ready: function () {
+                this.$$("iron-scroll-threshold").clearTriggers();
+            },
+            _iconClick: function (e) {
+                var page = 0;
+                if (this.page !== undefined) {
+                    page = 1;
+                }
+                this.fire('icon-click', {
+                    which: e.currentTarget.id,
+                    page: page
+                });
+            },
+            _clearTriggers: function () {
+                this.$$("iron-scroll-threshold").clearTriggers();
+            }
+        });
+    </script>
+</dom-module>

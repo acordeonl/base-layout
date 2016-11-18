@@ -1,0 +1,89 @@
+<dom-module id="page-css">
+    <template>
+        <style>
+            [page] [content]{
+                background-color: var(--background-color);
+            }
+            [page] app-header-layout{
+                background-color: var(--background-color);
+            }
+            [page] [blank]{
+                height:45px;
+            }
+            [page] [header]{
+                height:100px ;
+            }
+            [page] [description]{
+                width:600px ;
+                font-size: 26px;
+                margin-left: 30px;
+            }
+            [page] [card]{
+                width:670px;
+                @apply(--shadow-elevation-3dp);
+            }
+            [laptop][page] [color]{
+                border-top-right-radius:0px;
+                border-bottom-right-radius:0px;
+                border-top-left-radius: 4px;
+                border-bottom-left-radius: 4px;
+            }
+        </style>
+        <style mobile>
+            [mobile][page] [blank]{
+                height: 50px;
+            }
+            [mobile][page] [header]{
+                height: 90px;
+            }
+            [mobile][page] [description]{
+                width: 78% ;
+                font-size: 25px;
+            }
+            [mobile][page] [card] {
+                width: 100%;
+            }
+            [mobile][page] [color]{
+                border-top-right-radius:0px;
+                border-bottom-right-radius:0px;
+                border-top-left-radius: 0px;
+                border-bottom-left-radius: 0px;
+            }
+        </style>
+        <style laptop>
+            [laptop][page] [exit-icon]{
+                margin-left: 30px ;
+            }
+            [laptop][page] [right-icons] paper-icon-button{
+                margin-left: 50px;
+            }
+            [laptop][page] [right-icons] drop-menu{
+                margin-left: 37px;
+            }
+            [laptop][page] [right-icons] {
+                margin-right:25px;
+                opacity: 1 ;
+            }
+        </style>
+        <style tablet>
+            [tablet][page] [blank]{
+                height:30px;
+            }
+            [tablet][page] [header]{
+                height: 130px;
+            }
+            [tablet][page] [description] {
+                width: 80% ;
+            }
+            [tablet][page] [right-icons] paper-icon-button{
+                margin-left: 30px;
+            }
+            [tablet][page] [color]{
+                border-top-right-radius:0px;
+                border-bottom-right-radius:0px;
+                border-top-left-radius: 0px;
+                border-bottom-left-radius: 0px;
+            }
+        </style>
+    </template>
+</dom-module>
