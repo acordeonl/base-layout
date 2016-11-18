@@ -1,0 +1,30 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="../base-layout.html">
+<dom-module id="pe-holder">
+    <template>
+        <style >
+            [layout-wrapper] {
+                border: 1px solid black;
+                height:100vh;
+                width:100vw;
+            }
+            base-layout {
+                --close-color:#4775D1;
+                --background-color: gray ;
+                --content-background:white ;
+            }
+        </style>
+        <div layout-wrapper>
+            <base-layout page header="coleto" color="#4775D1" exit-icon="arrow-back" right-icon2="social:notifications-none" menu='["Mis grabaciones","Cerrar sesión"]'>
+                <div content>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </div>
+            </base-layout>
+        </div>
+    </template>
+    <script>
+        Polymer({is: "pe-holder", observers: [], behaviors: [], listeners: {}, properties: {}});
+    </script>
+</dom-module>
