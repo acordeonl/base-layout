@@ -2,10 +2,10 @@
     <template>
         <style>
             [page] [content]{
-                background-color: var(--background-color3);
+                background-color: var(--background-color2);
             }
             [page] app-header-layout{
-                background-color: var(--background-color3);
+                background-color: var(--background-color2);
             }
             [page] [blank]{
                 height:45px;
@@ -17,16 +17,16 @@
                 width:600px ;
                 font-size: 26px;
                 margin-left: 30px;
+                color: var(--title-color1);
+                opacity: 1 ; 
             }
             [page] [card]{
                 width:670px;
                 @apply(--shadow-elevation-3dp);
             }
-            [laptop][page] [color]{
-                border-top-right-radius:0px;
-                border-bottom-right-radius:0px;
-                border-top-left-radius: 4px;
-                border-bottom-left-radius: 4px;
+
+            [page] [toolbar]{
+                color:var(--title-color2) ;
             }
         </style>
         <style mobile>
@@ -51,6 +51,12 @@
             }
         </style>
         <style laptop>
+            [laptop][page] [color]{
+                border-top-right-radius:0px;
+                border-bottom-right-radius:0px;
+                border-top-left-radius: 4px;
+                border-bottom-left-radius: 4px;
+            }
             [laptop][page] [exit-icon]{
                 margin-left: 30px ;
             }
