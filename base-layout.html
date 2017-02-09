@@ -25,9 +25,9 @@ For an overlayed drop menu:
 ----------------|-------------|----------
 `--item-background-color` | List item backround color | `#f1ecef`
 `--item-color` | List item color used for fonts | `#302f31`
-`--close-color` | Icon button hover color | `4775D1`
+`--theme-color1` | Icon button hover color | `4775D1`
 `--content-background` | Drop menu's background color | `white`
-`--close-color` | Icon button hover color | `4775D1`
+`--theme-color1` | Icon button hover color | `4775D1`
 `--icon-button` | Mixin applied the icon button | `{}`
 
 @demo demo/base-layout-demo.html
@@ -115,7 +115,7 @@ For an overlayed drop menu:
                     };
                 }
                 paper-icon-button:hover {
-                    color: var(--close-color,#4775D1);
+                    color: var(--theme-color1,#4775D1);
                 }
                 [toolbar] {
                     top: -70px;
@@ -186,7 +186,7 @@ For an overlayed drop menu:
             </style>
             <style>
                 :host {
-                    --layout-color: var(--close-color);
+                    --layout-color: var(--theme-color1);
                 }
                 iron-scroll-threshold {
                     width: 100%;
