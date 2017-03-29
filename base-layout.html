@@ -1,6 +1,5 @@
 <imports >
     <link rel="import" href="../polymer/polymer.html">
-    <link rel="import" href="../app-layout/app-header-layout/app-header-layout.html">
     <link rel="import" href="../paper-icon-button/paper-icon-button.html">
     <link rel="import" href="../iron-scroll-threshold/iron-scroll-threshold.html">
     <link rel="import" href="../local-dom/local-dom.html">
@@ -37,13 +36,14 @@ For an overlayed drop menu:
         <styles >
             <style include='page-css'></style>
             <style main>
-                app-header-layout {
+                iron-scroll-threshold {
                     width: 100%;
                     height: 100%;
+                    /*position:absolute ;*/
+                    /*will-change:transform ;*/
                 }
-                [container] {
-                    width: 100%;
-                    height: 100%;
+                .withList{
+                    /*will-change:transform ;*/
                 }
                 [blank] {
                     height: 25px;
@@ -86,7 +86,7 @@ For an overlayed drop menu:
                 }
                 [list] {
                     height: 50%;
-                    overflow: hidden;
+                    /*overflow: hidden;*/
                     @apply(--layout-horizontal);
                     @apply(--layout-center-justified);
                     width: 96%;
@@ -123,7 +123,7 @@ For an overlayed drop menu:
                     width: 100%;
                     height: 70px;
                     color: var(--content-color2,#636363);
-                    position: absolute;
+                    position: fixed;
                     @apply(--layout-horizontal);
                     @apply(--layout-justified);
                 }
@@ -188,66 +188,66 @@ For an overlayed drop menu:
                 :host {
                     --layout-color: var(--theme-color1);
                 }
-                iron-scroll-threshold {
-                    width: 100%;
-                    height: 100%;
+                local-dom{
+                    height:100%;
+                    width:100%;
+                    background-color: red ;
+                }
+                drop-menu{
+                    will-change:transform ;
                 }
             </style>
         </styles>
         <local-dom mobile="{{mobile}}" tablet="{{tablet}}" laptop="{{laptop}}" page$=[[page]]>
-            <div container>
-                <app-header-layout has-scrolling-region id="scroll-region">
-                    <iron-scroll-threshold id="scroll" lower-threshold="300">
-                        <div blank></div>
-                        <template is="dom-if" if="[[!withHeader]]">
+            <iron-scroll-threshold id="scroll" lower-threshold="300">
+                    <div blank></div>
+                    <template is="dom-if" if="[[!withHeader]]">
+                        <div header>
+                            <div description>
+                                <p>[[header]]</p>
+                            </div>
+                        </div>
+                    </template>
+                    <template is="dom-if" if="[[withHeader]]">
+                        <template is="dom-if" if="[[withHeaderTitle]]">
                             <div header>
                                 <div description>
                                     <p>[[header]]</p>
                                 </div>
                             </div>
                         </template>
-                        <template is="dom-if" if="[[withHeader]]">
-                            <template is="dom-if" if="[[withHeaderTitle]]">
-                                <div header>
-                                    <div description>
-                                        <p>[[header]]</p>
-                                    </div>
-                                </div>
-                            </template>
-                            <div componentHeader>
-                                <content select='[header]'></content>
-                            </div>
-                        </template>
-                        <div content>
-                            <div card>
-                                <div color></div>
-                                <div list>
-                                    <div listContent>
-                                        <content select='[content]'></content>
-                                    </div>
-                                </div>
-                            </div>
+                        <div componentHeader>
+                            <content select='[header]'></content>
                         </div>
-                    </iron-scroll-threshold>
-                    <div toolbar>
-                        <template is="dom-if" if="[[exitIcon]]">
-                            <div exit-icon>
-                                <paper-icon-button id="exitIcon" on-click="_iconClick" icon="[[exitIcon]]"></paper-icon-button>
+                    </template>
+                    <div content>
+                        <div card>
+                            <div color></div>
+                            <div list>
+                                <div listContent>
+                                    <content select='[content]'></content>
+                                </div>
                             </div>
-                        </template>
-                        <div right-icons>
-                            <template is="dom-if" if="[[rightIcon]]">
-                                <paper-icon-button id="rightIcon" on-click="_iconClick" icon="[[rightIcon]]"></paper-icon-button>
-                            </template>
-                            <template is="dom-if" if="[[rightIcon2]]">
-                                <paper-icon-button id="rightIcon2" on-click="_iconClick" icon="[[rightIcon2]]"></paper-icon-button>
-                            </template>
-                            <template is="dom-if" if="[[menu]]">
-                                <drop-menu list-items='{{menu}}'></drop-menu>
-                            </template>
                         </div>
                     </div>
-                </app-header-layout>
+                </iron-scroll-threshold>
+            <div toolbar>
+                <template is="dom-if" if="[[exitIcon]]">
+                    <div exit-icon>
+                        <paper-icon-button noink id="exitIcon" on-click="_iconClick" icon="[[exitIcon]]"></paper-icon-button>
+                    </div>
+                </template>
+                <div right-icons>
+                    <template is="dom-if" if="[[rightIcon]]">
+                        <paper-icon-button id="rightIcon" on-click="_iconClick" icon="[[rightIcon]]"></paper-icon-button>
+                    </template>
+                    <template is="dom-if" if="[[rightIcon2]]">
+                        <paper-icon-button id="rightIcon2" on-click="_iconClick" icon="[[rightIcon2]]"></paper-icon-button>
+                    </template>
+                    <template is="dom-if" if="[[menu]]">
+                        <drop-menu list-items='{{menu}}'></drop-menu>
+                    </template>
+                </div>
             </div>
         </local-dom>
     </template>
@@ -260,6 +260,10 @@ For an overlayed drop menu:
                 'lower-threshold': '_clearTriggers'
             },
             properties: {
+                shortList:{
+                    type:Boolean,
+                    value:false
+                },
                 withHeader: {
                     type: Boolean,
                     value: false
@@ -278,9 +282,6 @@ For an overlayed drop menu:
             scrollTop: function () {
                 this.$.scroll.scroll(0, 0);
             },
-            ready: function () {
-                this.$$("iron-scroll-threshold").clearTriggers();
-            },
             _iconClick: function (e) {
                 var page = 0;
                 if (this.page !== undefined) {
@@ -293,6 +294,11 @@ For an overlayed drop menu:
             },
             _clearTriggers: function () {
                 this.$$("iron-scroll-threshold").clearTriggers();
+            },
+            ready: function () {
+                this.$$("iron-scroll-threshold").clearTriggers();
+                if(!this.shortList)
+                    this.$$("iron-scroll-threshold").classList.add('withList');
             }
         });
     </script>
