@@ -1,7 +1,6 @@
 <imports >
     <link rel="import" href="../polymer/polymer.html">
     <link rel="import" href="../paper-icon-button/paper-icon-button.html">
-    <link rel="import" href="../iron-scroll-threshold/iron-scroll-threshold.html">
     <link rel="import" href="../local-dom/local-dom.html">
     <link rel="import" href="../drop-menu/drop-menu.html">
     <link rel="import" href="./page-css.html">
@@ -36,14 +35,11 @@ For an overlayed drop menu:
         <styles >
             <style include='page-css'></style>
             <style main>
-                iron-scroll-threshold {
+                [scroll]{
+                    overflow-y: auto;
                     width: 100%;
                     height: 100%;
-                    /*position:absolute ;*/
-                    /*will-change:transform ;*/
-                }
-                .withList{
-                    /*will-change:transform ;*/
+                    will-change:transform ;
                 }
                 [blank] {
                     height: 25px;
@@ -69,12 +65,13 @@ For an overlayed drop menu:
                     @apply(--layout-horizontal);
                 }
                 [content] {
+                    will-change:transform ;
                     width: 100%;
                     @apply(--layout-vertical);
                     @apply(--layout-center);
                 }
                 [card] {
-                    min-height: 30%;
+                    min-height: 300px;
                     @apply(--layout-horizontal);
                     @apply(--layout-justified);
                     width: 100%;
@@ -117,13 +114,18 @@ For an overlayed drop menu:
                 paper-icon-button:hover {
                     color: var(--theme-color1,#4775D1);
                 }
+                iron-icon:hover {
+                    color: var(--theme-color1,#4775D1);
+                    cursor: pointer;
+                }
                 [toolbar] {
-                    top: -70px;
+                    top: 0px;
                     left: 0;
                     width: 100%;
-                    height: 70px;
+                    height: 0px;
                     color: var(--content-color2,#636363);
-                    position: fixed;
+                    position: absolute;;
+                    will-change:transform  ;
                     @apply(--layout-horizontal);
                     @apply(--layout-justified);
                 }
@@ -131,7 +133,7 @@ For an overlayed drop menu:
                     height: 100%;
                     margin-left: 10px;
                     width: 12%;
-                    margin-top: 68px;
+                    margin-top: 30px;
                     @apply(--layout-center);
                     @apply(--layout-horizontal);
                 }
@@ -142,7 +144,7 @@ For an overlayed drop menu:
                     margin-left: 15px;
                 }
                 [right-icons] {
-                    margin-top: 68px;
+                    margin-top: 30px;
                     height: 100%;
                     margin-right: 15px;
                     @apply(--layout-horizontal);
@@ -185,6 +187,16 @@ For an overlayed drop menu:
                 }
             </style>
             <style>
+                [loading]{
+                    width: 95%;
+                    font-size: 22px ;
+                    @apply(--layout-horizontal);
+                    @apply(--layout-center-justified);
+                    @apply(--layout-center);
+                    margin-top: 100px;
+                    position:absolute;
+                    color:gray ;
+                }
                 :host {
                     --layout-color: var(--theme-color1);
                 }
@@ -199,56 +211,61 @@ For an overlayed drop menu:
             </style>
         </styles>
         <local-dom mobile="{{mobile}}" tablet="{{tablet}}" laptop="{{laptop}}" page$=[[page]]>
-            <iron-scroll-threshold id="scroll" lower-threshold="300">
-                    <div blank></div>
-                    <template is="dom-if" if="[[!withHeader]]">
+            <div scroll>
+                <div blank></div>
+                <template is="dom-if" if="[[!withHeader]]">
+                    <div header>
+                        <div description>
+                            <p>[[header]]</p>
+                        </div>
+                    </div>
+                </template>
+                <template is="dom-if" if="[[withHeader]]">
+                    <template is="dom-if" if="[[withHeaderTitle]]">
                         <div header>
                             <div description>
                                 <p>[[header]]</p>
                             </div>
                         </div>
                     </template>
-                    <template is="dom-if" if="[[withHeader]]">
-                        <template is="dom-if" if="[[withHeaderTitle]]">
-                            <div header>
-                                <div description>
-                                    <p>[[header]]</p>
-                                </div>
-                            </div>
-                        </template>
-                        <div componentHeader>
-                            <content select='[header]'></content>
-                        </div>
-                    </template>
-                    <div content>
-                        <div card>
-                            <div color></div>
-                            <div list>
-                                <div listContent>
-                                    <content select='[content]'></content>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </iron-scroll-threshold>
-            <div toolbar>
-                <template is="dom-if" if="[[exitIcon]]">
-                    <div exit-icon>
-                        <paper-icon-button noink id="exitIcon" on-click="_iconClick" icon="[[exitIcon]]"></paper-icon-button>
+                    <div componentHeader>
+                        <content select='[header]'></content>
                     </div>
                 </template>
-                <div right-icons>
-                    <template is="dom-if" if="[[rightIcon]]">
-                        <paper-icon-button id="rightIcon" on-click="_iconClick" icon="[[rightIcon]]"></paper-icon-button>
-                    </template>
-                    <template is="dom-if" if="[[rightIcon2]]">
-                        <paper-icon-button id="rightIcon2" on-click="_iconClick" icon="[[rightIcon2]]"></paper-icon-button>
-                    </template>
-                    <template is="dom-if" if="[[menu]]">
-                        <drop-menu list-items='{{menu}}'></drop-menu>
-                    </template>
+                <div content>
+                    <div card>
+                        <div color></div>
+                        <div list>
+                            <div listContent>
+                                <content select='[content]'></content>
+                            </div>
+                            <template is="dom-if" if="[[loading]]" >
+                                <div loading>
+                                    Cargando ...
+                                </div>
+                            </template>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <div toolbar>
+                    <template is="dom-if" if="[[exitIcon]]">
+                        <div exit-icon>
+                            <paper-icon-button id="exitIcon" on-click="_iconClick" icon="[[exitIcon]]"></paper-icon-button>
+                        </div>
+                    </template>
+                    <div right-icons>
+                        <template is="dom-if" if="[[rightIcon]]">
+                            <paper-icon-button id="rightIcon" on-click="_iconClick" icon="[[rightIcon]]"></paper-icon-button>
+                        </template>
+                        <template is="dom-if" if="[[rightIcon2]]">
+                            <paper-icon-button id="rightIcon2" on-click="_iconClick" icon="[[rightIcon2]]"></paper-icon-button>
+                        </template>
+                        <template is="dom-if" if="[[menu]]">
+                            <drop-menu list-items='{{menu}}'></drop-menu>
+                        </template>
+                    </div>
+                </div>
         </local-dom>
     </template>
     <script>
@@ -256,10 +273,18 @@ For an overlayed drop menu:
             is: "base-layout",
             observers: [],
             behaviors: [],
-            listeners: {
-                'lower-threshold': '_clearTriggers'
-            },
+            listeners: {},
             properties: {
+                attachHandler:{
+                    type:Number
+                },
+                contentNode:{
+                    type:Object
+                },
+                loading:{
+                    type:Boolean,
+                    value:false
+                },
                 shortList:{
                     type:Boolean,
                     value:false
@@ -277,10 +302,33 @@ For an overlayed drop menu:
                 },
                 color: {
                     type: String
+                },
+                detachHandler:{
+                    type:Number
                 }
             },
-            scrollTop: function () {
-                this.$.scroll.scroll(0, 0);
+            attached: function(){
+                if(this.contentNode !== undefined) {
+                    this.loading=true ;
+                    this.cancelAsync(this.attachHandler);
+                    this.attachHandler = this.async(function(){
+                        this.loading = false ;
+                        Polymer.dom(this.$$('[list]')).appendChild(this.contentNode) ;
+                        this.fire('theme-app') ;
+                    }.bind(this) , 600 )  ;
+                }
+                this.fire('theme-app') ;
+            },
+            detached: function(){
+                this.cancelAsync(this.attachHandler);
+
+                if(this.contentNode === undefined) {
+                    this.contentNode = this.$$('[list]').firstElementChild;
+                }
+                this.cancelAsync(this.detachHandler);
+                this.detachHandler = this.async(function(){
+                    Polymer.dom(this.$$('[list]')).removeChild(this.contentNode) ;
+                } , 200 )  ;
             },
             _iconClick: function (e) {
                 var page = 0;
@@ -291,14 +339,6 @@ For an overlayed drop menu:
                     which: e.currentTarget.id,
                     page: page
                 });
-            },
-            _clearTriggers: function () {
-                this.$$("iron-scroll-threshold").clearTriggers();
-            },
-            ready: function () {
-                this.$$("iron-scroll-threshold").clearTriggers();
-                if(!this.shortList)
-                    this.$$("iron-scroll-threshold").classList.add('withList');
             }
         });
     </script>
