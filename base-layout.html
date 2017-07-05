@@ -311,11 +311,11 @@ For an overlayed drop menu:
                 if(this.contentNode !== undefined) {
                     this.loading=true ;
                     this.cancelAsync(this.attachHandler);
-                    this.attachHandler = this.async(function(){
+                    this.attachHandler = this.async( () =>{
                         this.loading = false ;
                         Polymer.dom(this.$$('[list]')).appendChild(this.contentNode) ;
                         this.fire('theme-app') ;
-                    }.bind(this) , 600 )  ;
+                    } , 550 )  ;
                 }
                 this.fire('theme-app') ;
             },
@@ -326,7 +326,7 @@ For an overlayed drop menu:
                     this.contentNode = this.$$('[list]').firstElementChild;
                 }
                 this.cancelAsync(this.detachHandler);
-                this.detachHandler = this.async(function(){
+                this.detachHandler = this.async(() => {
                     Polymer.dom(this.$$('[list]')).removeChild(this.contentNode) ;
                 } , 200 )  ;
             },
