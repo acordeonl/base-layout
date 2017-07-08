@@ -275,6 +275,10 @@ For an overlayed drop menu:
             behaviors: [],
             listeners: {},
             properties: {
+                attachedContent:{
+                    type:Boolean,
+                    value:false
+                },
                 attachHandler:{
                     type:Number
                 },
@@ -312,9 +316,12 @@ For an overlayed drop menu:
                     this.loading=true ;
                     this.cancelAsync(this.attachHandler);
                     this.attachHandler = this.async( () =>{
-                        this.loading = false ;
-                        Polymer.dom(this.$$('[list]')).appendChild(this.contentNode) ;
-                        this.fire('theme-app') ;
+                        if (!this.attachedContent) {
+                            this.loading = false ;
+                            Polymer.dom(this.$$('[list]')).appendChild(this.contentNode) ;
+                            this.attachedContent = true ;
+                            this.fire('theme-app') ;
+                        }
                     } , 550 )  ;
                 }
                 this.fire('theme-app') ;
@@ -327,7 +334,10 @@ For an overlayed drop menu:
                 }
                 this.cancelAsync(this.detachHandler);
                 this.detachHandler = this.async(() => {
-                    Polymer.dom(this.$$('[list]')).removeChild(this.contentNode) ;
+                    if (this.attachedContent) {
+                        Polymer.dom(this.$$('[list]')).removeChild(this.contentNode) ;
+                        this.attachedContent = false ;
+                    }
                 } , 200 )  ;
             },
             _iconClick: function (e) {
