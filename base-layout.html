@@ -320,11 +320,11 @@ For an overlayed drop menu:
                             this.loading = false ;
                             Polymer.dom(this.$$('[list]')).appendChild(this.contentNode) ;
                             this.attachedContent = true ;
-                            this.fire('theme-app') ;
+                            this.fire('update-app-style') ;
                         }
                     } , 550 )  ;
                 }
-                this.fire('theme-app') ;
+                this.fire('update-app-style') ;
             },
             detached: function(){
                 this.cancelAsync(this.attachHandler);
