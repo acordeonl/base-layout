@@ -212,7 +212,6 @@ For an overlayed drop menu:
         </styles>
         <local-dom mobile="{{mobile}}" tablet="{{tablet}}" desktop="{{desktop}}" page$=[[page]]>
             <div scroll>
-                <a id="listFocus" href=""></a>
                 <div blank></div>
                 <template is="dom-if" if="[[!withHeader]]">
                     <div header>
@@ -313,7 +312,6 @@ For an overlayed drop menu:
                 }
             },
             attached: function(){
-                this.$.listFocus.focus(); 
                 if(this.contentNode !== undefined) {
                     this.loading=true ;
                     this.cancelAsync(this.attachHandler);
